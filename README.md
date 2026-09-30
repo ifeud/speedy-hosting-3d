@@ -1,60 +1,75 @@
 # Speedy Hosting
 
-An original game-hosting website concept with a real interactive 3D server sculpture, seven original environment and hardware illustrations, and transparent custom cursors.
+## Version 4: independent voxel-inspired web design
 
-## Open the website
+The UI has been completely recoded with a full-width original environment hero, square green web buttons, bold non-pixel typography, light/dark block sections, and Speedy's own brand. This is a broad Minecraft.net-inspired website direction, not a pixel-for-pixel clone or an imitation of Minecraft's in-game menus.
 
-**`index.html` is the entire website.** Open it directly in a modern browser. Styling, variable fonts, Phosphor SVG icons, optimized artwork, custom cursors, JavaScript, and the Three.js renderer are embedded. No CDN or external runtime requests are needed.
+**`index.html` is the complete standalone website.** Artwork, fonts, icons, styles, JavaScript and the contained 3D hardware demo are embedded. Open it directly in a modern browser. No external runtime assets are requested.
 
-The optional `social-preview.jpg` must be hosted publicly for social-sharing crawlers. It is not needed to display the page.
+## Original visuals and IP precautions
 
-## What changed in version 2
+* Seven original AI-generated voxel environments replace every publisher image.
+* No Minecraft, other game publisher or third-party product logo is used as Speedy branding.
+* No proprietary Minecraft fonts, textures, UI graphics or intentional recognizable game characters are used.
+* Archivo Black, Noto Sans and IBM Plex Mono are openly licensed fonts; full licenses are included.
+* The wordmark, cursor vectors and 3D hardware geometry are authored for Speedy.
+* Game names identify supported software descriptively. They do not name or brand the hosting company.
+* A prominent non-affiliation notice is included at the top of the page and in the footer.
 
-* A true WebGL hero sculpture with pointer, touch, and keyboard rotation, rather than floating status cards.
-* No floating green badges or pills. No double-hyphen punctuation in visible copy.
-* Six original game-world illustrations and one original industrial hardware illustration.
-* Four original transparent cursor designs: arrow, hand, text selection, and multidirectional drag. Native fallbacks are included.
-* Restrained depth interactions, editorial typography, and a charcoal, cream, and orange palette.
-* Reduced-motion support, keyboard controls, responsive navigation, and an artwork fallback when WebGL is unavailable.
-* Existing game filters, plan configurator, billing toggle, example quotes, control-panel demo, FAQs, and local support drafts remain functional.
+**These precautions are not a guarantee against a lawsuit or a legal clearance opinion.** AI generation does not guarantee non-infringement. Before commercial publication, review visual resemblance, trademark usage, actual operator identity/contact details, applicable publisher rules and local laws with qualified counsel. See `LEGAL_LAUNCH_CHECKLIST.md`.
+
+## Website features
+
+* Responsive navigation and mobile game menu
+* Search and filters for six supported games
+* Example monthly and annual plans, with clear billing disclosures
+* Game-aware RAM requirements and local quote downloads
+* Interactive Console, Files and Backups demonstration
+* Keyboard, pointer and touch controls for the original 3D hardware view
+* Region selection without invented live latency numbers
+* FAQ, local support draft, client preview and legal dialogs
+* Transparent 24 px arrow, hand, text and drag cursors with native fallbacks
+* Reduced-motion and keyboard support
+* SEO title, description, canonical, Open Graph, Twitter and JSON-LD metadata
+
+Accounts, payments, support sending and server provisioning are not connected. The site is a frontend concept, not an operational hosting company.
 
 ## Project structure
 
 ```text
-index.html                    Standalone deliverable
+index.html                     Complete standalone website
 public/
-  index.html                  Identical prebuilt Vercel page
-  speedy-logo.svg             Transparent vector wordmark
-  social-preview.jpg          Social-sharing preview
+  index.html                   Prebuilt Vercel deliverable
+  speedy-logo.svg              Transparent light wordmark
+  speedy-logo-dark.svg         Transparent dark wordmark
+  social-preview.jpg          Optional social-sharing asset
 assets/
-  v2/                         Original full-size generated artwork and 3D bundle
-  cursors/                    Original SVG and transparent PNG cursor designs
-  icons/                      Phosphor SVG source icons and license
-  *.woff2                     Embedded variable fonts
-  *-OFL.txt                   Font licenses
-  world.geojson               Natural Earth map source
-  *-card.webp                 Optimized game artwork
-speedy-logo.svg                Standalone transparent logo
-social-preview.jpg             Social-sharing asset
+  v4/                          Seven original source illustrations, optimized art,
+                               original vector fallback and artwork manifest
+  cursors/                     Editable SVG and transparent PNG cursors
+  icons/                       Phosphor SVG icons and MIT license
+  *.woff2                     Embedded open-license fonts
+  *-OFL.txt                   Full font licenses
+  *-card.webp                  Optimized original catalog illustrations
+  world.geojson                Public-domain geography
+  v2/scene.min.js               Renderer bundle, retained filename for compatibility
+  v2/three-LICENSE.txt          Three.js license
 tools/
-  site.html                   HTML template
-  site.css                    Base component styles
-  v2.css                      Version 2 art direction and cursor styles
-  site.js                     Website interactions
-  scene.js                    Authored Three.js sculpture and controls
-  build.py                    Asset optimization and single-file assembly
-  cursors.py                  Transparent cursor generation
-  prepare-vercel.mjs          Automatic production SEO URL injection
-  qa.py                       Automated interaction and responsive checks
-package.json                  Exact JavaScript dependency versions
-package-lock.json             Reproducible dependency lockfile
-requirements.txt              Python build dependencies
-vercel.json                   Publishes only the public folder
+  site.html                    HTML template
+  site.css                     New version 4 visual system
+  site.js                      Website interactions
+  scene.js                     Original 3D sculpture, controls and fallback logic
+  build.py                     Single-file asset assembly
+  cursors.py                   Cursor generation
+  prepare-vercel.mjs           Production SEO origin injection
+  qa.py                        Automated markup, art, font, cursor and interaction tests
 ```
 
-## Build from source
+Historical versions and reference materials are not included in the current source ZIP or deployed public folder.
 
-Requires Node.js 20.19 or newer and Python 3.11 or newer.
+## Rebuild
+
+Requires Node.js 20.19+ and Python 3.11+.
 
 ```sh
 npm ci
@@ -63,61 +78,39 @@ python tools/cursors.py
 npm run build
 ```
 
-The build writes the standalone `index.html` and the identical `public/index.html`, plus the logo and social preview in `public`.
+All required artwork and font files are already in the source package. Rebuilding does not download game artwork.
 
-Preview only the public website:
-
-```sh
-python -m http.server 3000 --bind 0.0.0.0 --directory public
-```
-
-Open `http://localhost:3000` on your own computer. Remote preview environments should use their provided preview URL.
-
-## Vercel publishing
-
-Vercel deploys the website; GitHub stores the private source repository. These are separate services.
-
-### Import a private GitHub repository
-
-1. Create or use a **private** GitHub repository and commit this source.
-2. In Vercel, choose **Add New → Project**, authorize the GitHub integration, and import the private repository.
-3. Select **Other** as the framework. The included `vercel.json` serves the already-built `public` directory. No package installation is required. A tiny built-in Node.js publishing step injects the real production origin into the SEO tags.
-4. Deploy. The source repository can remain private while the website is publicly accessible.
-5. To keep future deployments up to date, commit both source changes and the rebuilt `public` files. The Git integration then deploys new commits.
-
-### Deploy from the CLI
+Preview:
 
 ```sh
-npm ci
-npx vercel login
-npx vercel --prod
+npm run preview
 ```
 
-Use the official browser sign-in flow. Do not put access tokens in the repository, HTML, screenshots, source files, or chat. `.env`, local credentials, and Vercel project metadata are ignored by Git.
+Use `http://localhost:3000` on your own computer, or the supplied preview URL in a remote workspace.
 
-The private repository does **not** automatically make the deployed website private. If the website should also be access restricted, configure Vercel Deployment Protection in your account.
+## Verification
 
-## SEO and production checks
+```sh
+python -m pip install playwright beautifulsoup4
+python -m playwright install chromium
+python tools/qa.py
+```
 
-SEO metadata includes the title, description, robots directive, canonical URL, Open Graph, Twitter card, and JSON-LD.
+The current suite passed 199 checks across nine viewport widths from 320 to 1440 px, including original-art records, resource embedding, fonts, cursor transparency/hotspots, navigation, quotes, downloads, panel controls, 3D interaction, dialogs and full-page rendering. No JavaScript page errors, external runtime asset requests or horizontal page overflow were detected.
 
-Before public launch:
+## Publishing
 
-* On Vercel, `tools/prepare-vercel.mjs` automatically resolves the SEO origin from `SITE_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, or `VERCEL_URL`. Set `SITE_URL` to your custom production origin if needed. For other hosts, replace the example origin in the template and rebuild.
-* Host `public/social-preview.jpg` at the social-preview URL referenced by the metadata.
-* Verify actual prices, game requirements, locations, features, support arrangements, and business policies.
-* Connect secure authentication, billing, payment, provisioning, and support backends if turning the concept into a real hosting service.
+The private source repository and a publicly accessible Vercel website are separate things. Vercel deployment was previously declined by the user; it is not performed by opening or rebuilding the HTML.
 
-This is a frontend concept. It does not collect payments, create accounts, send support messages, or provision servers. Form inputs stay in memory in the browser. Downloaded quotes and support drafts are local files.
+To publish manually, push the source and prebuilt `public` folder to your private repository and import it into Vercel with framework **Other**. Keep `vercel.json`; it runs the built-in Node publishing step without dependency installation. `SITE_URL`, `VERCEL_PROJECT_PRODUCTION_URL` or `VERCEL_URL` supplies the production SEO origin.
 
-## Third-party and artwork credits
+The HTML uses `https://speedyhosting.example` until a real origin is supplied. The optional social-preview image must be available at its public metadata URL. Verify business details and connect secure production backends before launch.
 
-* Three.js: MIT license. Authored sculpture geometry, lighting, batching, and interactions are in `tools/scene.js`.
-* Phosphor Icons: MIT license. Source and license in `assets/icons`.
-* Space Grotesk and Manrope: SIL Open Font License. Full licenses are in `assets` and embedded in the HTML.
+Do not put credentials in source, HTML, screenshots, chat or the repository. Environment and local authentication files are ignored by Git.
+
+## Licenses
+
+* Archivo Black, Noto Sans and IBM Plex Mono: SIL Open Font Licenses included.
+* Three.js and Phosphor Icons: MIT licenses included.
 * Natural Earth geography: public domain.
-* Seven original generated illustrations are in `assets/v2`. They are creative interpretations, not official game screenshots.
-* The original wordmark and transparent cursor vectors are included as editable SVGs.
-* Game names belong to their respective publishers. This concept is not affiliated with the publishers.
-
-All runtime visuals and fonts are embedded in the standalone page. Production social-sharing previews are the only optional publishing asset that needs a public URL.
+* Original illustrations: AI-generated for this project, not official game assets. Legal clearance is not guaranteed.

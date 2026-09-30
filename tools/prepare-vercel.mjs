@@ -14,7 +14,7 @@ if (configured) {
 }
 const standalone = await readFile(resolve(root, 'index.html'), 'utf8');
 await writeFile(resolve(output, 'index.html'), standalone.replaceAll('https://speedyhosting.example', origin));
-for (const file of ['speedy-logo.svg', 'social-preview.jpg']) {
+for (const file of ['speedy-logo.svg', 'speedy-logo-dark.svg', 'social-preview.jpg']) {
   await copyFile(resolve(root, file), resolve(output, file));
 }
 console.log(`Prepared standalone public website. SEO origin: ${origin}`);

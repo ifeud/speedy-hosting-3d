@@ -8,11 +8,18 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
   const host = document.querySelector('#engine-stage');
   const canvas = document.querySelector('#engine-canvas');
   if (!host || !canvas) return;
+  function useFallback(){
+    host.classList.add('render-fallback');host.classList.remove('scene-ready');
+    canvas.hidden=true;canvas.removeAttribute('tabindex');canvas.setAttribute('aria-hidden','true');
+    const tools=host.parentElement.querySelector('.engine-tools');
+    if(tools){const caption=tools.querySelector('span');if(caption)caption.textContent='Hardware illustration';}
+    const reset=document.querySelector('#reset-engine');if(reset)reset.disabled=true;
+  }
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true, powerPreference:'low-power'});
   } catch (_) {
-    host.classList.add('render-fallback');
+    useFallback();
     return;
   }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -121,7 +128,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
     if(event.pointerType!=='mouse'&&!drag)return;
     const r=canvas.getBoundingClientRect();pointerX=(event.clientX-r.left)/r.width-.5;pointerY=(event.clientY-r.top)/r.height-.5;
     if(drag){rotation+=(event.clientX-lastX)*.009;lastX=event.clientX;}
-    if(reduced){world.rotation.y=-.22+rotation+pointerX*.12;render();}
+    if(drag||reduced){world.rotation.y=-.22+rotation+pointerX*.14;world.rotation.x=pointerY*.055;render();}
   });
   canvas.addEventListener('pointerdown',event=>{
     drag=true;lastX=event.clientX;canvas.setPointerCapture(event.pointerId);canvas.classList.add('is-dragging');
@@ -129,12 +136,12 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
   canvas.addEventListener('keydown',event=>{
     if(!['ArrowLeft','ArrowRight','Home'].includes(event.key))return;
     event.preventDefault();rotation=event.key==='Home'?0:rotation+(event.key==='ArrowLeft'?-.16:.16);
-    if(reduced){world.rotation.y=-.22+rotation;render();}
+    world.rotation.y=-.22+rotation+pointerX*.14;render();
   });
   const release=()=>{drag=false;canvas.classList.remove('is-dragging');};
   canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);
   canvas.addEventListener('pointerleave',()=>{if(!drag){pointerX=0;pointerY=0;}});
-  canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();host.classList.remove('scene-ready');visible=false;cancelAnimationFrame(frame);});
+  canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();useFallback();visible=false;cancelAnimationFrame(frame);frame=0;});
   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible&&!frame&&!reduced)animate();},{rootMargin:'80px'});observer.observe(host);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&visible&&!frame&&!reduced)animate();});
   function animate(){

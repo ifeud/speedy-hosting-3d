@@ -1,0 +1,79 @@
+{
+  "created": "2026-09-30",
+  "method": "Original AI-generated voxel environment illustrations",
+  "publisher_assets_used": false,
+  "limitations": "Original generation and independent branding cannot guarantee legal clearance. Review resemblance, trademark context, operator details and applicable laws before commercial publication.",
+  "games": {
+    "minecraft": {
+      "title": "Riverside builders village",
+      "local_file": "assets/v4/builders-world.png",
+      "sha256": "2d6842ca68acbcc8fd2353e46c3b9bc9669cad1e6704d07d38a2da03066ccbe2",
+      "dimensions": [
+        1376,
+        768
+      ],
+      "type": "original_ai_generated",
+      "not_game_screenshot": true
+    },
+    "rust": {
+      "title": "Coastal relay station",
+      "local_file": "assets/v4/industrial-world.png",
+      "sha256": "01b6ebf24858ae869f48ac08d3e5fc0895fa1f9fed9fe693f727807d430794a0",
+      "dimensions": [
+        1376,
+        768
+      ],
+      "type": "original_ai_generated",
+      "not_game_screenshot": true
+    },
+    "palworld": {
+      "title": "Emerald waterfall valley",
+      "local_file": "assets/v4/companions-world.png",
+      "sha256": "4a565d113569dba6f85e47712d9bee071417144554c883d3bca332a2b8bc656c",
+      "dimensions": [
+        1376,
+        768
+      ],
+      "type": "original_ai_generated",
+      "not_game_screenshot": true
+    },
+    "valheim": {
+      "title": "Nordic fjord settlement",
+      "local_file": "assets/v4/nordic-world.png",
+      "sha256": "dc64d354464e9c0463a8dec313c162bdde7cbafd5f560387d9311fceab1fbb0f",
+      "dimensions": [
+        1376,
+        768
+      ],
+      "type": "original_ai_generated",
+      "not_game_screenshot": true
+    },
+    "terraria": {
+      "title": "Amber crystal cavern",
+      "local_file": "assets/v4/cavern-world.png",
+      "sha256": "590a45859ea08a5c714747abdc50f5e11b04f6b3beac8a74ad1617a9bd0d31ab",
+      "dimensions": [
+        1376,
+        768
+      ],
+      "type": "original_ai_generated",
+      "not_game_screenshot": true
+    },
+    "ark": {
+      "title": "Prehistoric river valley",
+      "local_file": "assets/v4/prehistoric-world.png",
+      "sha256": "425d78ded1b39ed869191ff20141b570da1d49647bc6b5e03fb3ae980f0291e1",
+      "dimensions": [
+        1376,
+        768
+      ],
+      "type": "original_ai_generated",
+      "not_game_screenshot": true
+    }
+  },
+  "hero": {
+    "local_file": "assets/v4/hero-world.png",
+    "sha256": "dbaa84268b1ee5fe40808bfdcdcd7fb5c9e96a5a3e698c09890712f2e4fd40c3",
+    "type": "original_ai_generated"
+  }
+}

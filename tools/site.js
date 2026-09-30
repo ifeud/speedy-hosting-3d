@@ -16,7 +16,7 @@
     ashburn:{name:'Ashburn, United States',short:'Ashburn',ping:18,desc:'A home base for your North-American adventures.'},
     frankfurt:{name:'Frankfurt, Germany',short:'Frankfurt',ping:21,desc:'A home base for your European adventures.'}
   };
-  let billing = 'monthly', selectedRegion = 'singapore', activeFilter = 'all', expandedGames = false;
+  let billing = 'monthly', selectedRegion = 'singapore', activeFilter = 'all';
   let appliedPromo = false, promoPrefill = '', quoteRecord = null, supportDraft = '', toastTimer;
 
   function toast(text) {
@@ -66,28 +66,28 @@
     }
   });
   function filterGames() {
-    const query = $('#game-search').value.trim().toLowerCase();
-    let shown = 0, matching = 0;
-    $$('.game-card').forEach((card,index) => {
-      const match = (activeFilter === 'all' || card.dataset.categories.split(' ').includes(activeFilter)) && card.dataset.search.includes(query);
-      if (match) matching++;
-      const visible = match && (expandedGames || query || activeFilter !== 'all' || index < 4);
-      card.hidden = !visible;
-      if (visible) shown++;
+    const raw=$('#game-search').value.trim().toLowerCase();
+    const query=raw==='mc'?'minecraft':raw;
+    let shown=0;
+    $$('.game-card').forEach(card=>{
+      const visible=(activeFilter==='all'||card.dataset.categories.split(' ').includes(activeFilter))&&card.dataset.search.includes(query);
+      card.hidden=!visible;if(visible)shown++;
     });
-    $('#empty-games').hidden = shown > 0;
-    $('#show-all-games').hidden = Boolean(query) || activeFilter !== 'all';
-    $('#show-all-games').innerHTML = `${expandedGames ? 'Show fewer games' : 'View all 6 games'} <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>`;
-    $('#game-results').textContent = `${shown} ${shown === 1 ? 'game' : 'games'} displayed. ${matching} matching games available.`;
+    $('#empty-games').hidden=shown>0;
+    $('#game-results').textContent=`${shown} ${shown===1?'game':'games'} found.`;
   }
-  $$('[data-filter]').forEach(button => button.addEventListener('click', () => {
-    activeFilter = button.dataset.filter;
-    $$('[data-filter]').forEach(tab => {tab.classList.toggle('active',tab===button);tab.setAttribute('aria-pressed',String(tab===button));});
+  $$('[data-filter]').forEach(button=>button.addEventListener('click',()=>{
+    activeFilter=button.dataset.filter;
+    $$('[data-filter]').forEach(tab=>{tab.classList.toggle('active',tab===button);tab.setAttribute('aria-pressed',String(tab===button));});
     filterGames();
   }));
   $('#game-search').addEventListener('input',filterGames);
-  $('#show-all-games').addEventListener('click', () => {expandedGames = !expandedGames;filterGames();});
-  $('#reset-search').addEventListener('click', () => {$('#game-search').value=''; $('[data-filter="all"]').click(); $('#game-search').focus();});
+  $('#reset-search').addEventListener('click',()=>{$('#game-search').value='';$('[data-filter="all"]').click();$('#game-search').focus();});
+  $('#hero-search').addEventListener('submit',event=>{
+    event.preventDefault();$('#game-search').value=$('#hero-query').value.trim();
+    $('[data-filter="all"]').click();$('#games').scrollIntoView({behavior:'smooth',block:'start'});
+    $('#game-search').focus({preventScroll:true});
+  });
   filterGames();
 
   function setBilling(period) {
@@ -107,12 +107,17 @@
     if (!dialog.open) dialog.showModal();
     document.body.classList.add('modal-open');
   }
+  function closeDialog(dialog) {
+    dialog.close();
+    if (!document.querySelector('dialog[open]')) document.body.classList.remove('modal-open');
+  }
   $$('dialog').forEach(dialog => {
-    $('[data-close]',dialog).addEventListener('click', () => dialog.close());
+    $('[data-close]',dialog).addEventListener('click', () => closeDialog(dialog));
+    dialog.addEventListener('cancel', event => {event.preventDefault();closeDialog(dialog);});
     dialog.addEventListener('click', event => {
       if (event.target!==dialog) return;
       const rect = dialog.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeDialog(dialog);
     });
     dialog.addEventListener('close', () => {if (!document.querySelector('dialog[open]')) document.body.classList.remove('modal-open');});
   });
@@ -180,7 +185,7 @@
     $$('[data-region]').forEach(button=>{const active=button.dataset.region===id;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
     $$('.map-pin').forEach(pin=>{const active=pin.dataset.mapRegion===id;pin.classList.toggle('active',active);pin.setAttribute('aria-pressed',String(active));});
     $('#location-name').textContent=regions[id].name;$('#location-desc').textContent=regions[id].desc;
-    $('#location-ping').innerHTML=`${regions[id].ping}<small>ms</small>`;
+    $('#location-ping').textContent=regions[id].short;
     $('#location-deploy').setAttribute('aria-label',`Configure a server in ${regions[id].short}`);
   }
   $$('[data-region]').forEach(button=>button.addEventListener('click',()=>selectRegion(button.dataset.region)));
@@ -247,7 +252,7 @@
   });
   const showClient=()=>openDialog($('#client-dialog'));
   $('#client-open').addEventListener('click',showClient);$('#footer-client').addEventListener('click',showClient);
-  $('#try-panel').addEventListener('click',()=>{$('#client-dialog').close();requestAnimationFrame(()=>{$('#panel').scrollIntoView({behavior:'smooth',block:'center'});$('#tab-console').focus({preventScroll:true});});});
+  $('#try-panel').addEventListener('click',()=>{closeDialog($('#client-dialog'));requestAnimationFrame(()=>{$('#panel').scrollIntoView({behavior:'smooth',block:'center'});$('#tab-console').focus({preventScroll:true});});});
   function showSupport() {$('#support-form').hidden=false;$('#support-result').hidden=true;openDialog($('#support-dialog'));}
   $('#support-open').addEventListener('click',showSupport);$('#footer-support').addEventListener('click',showSupport);
   $('#support-form').addEventListener('submit',event=>{
@@ -262,17 +267,6 @@
   const logoSVG=@@LOGO_JSON@@;
   $('#download-logo').addEventListener('click',()=>download(logoSVG,'speedy-logo.svg','image/svg+xml'));
   $('#copyright-year').textContent=String(new Date().getFullYear());
-  // Fine-pointer depth interactions. Touch and reduced-motion users get a stable layout.
-  if (matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
-    $$('.game-card, [data-tilt]').forEach(card => {
-      const strength=Number(card.dataset.tilt)||5;
-      card.addEventListener('pointermove',event=>{
-        const r=card.getBoundingClientRect();
-        const x=(event.clientX-r.left)/r.width-.5;
-        const y=(event.clientY-r.top)/r.height-.5;
-        card.style.transform=`perspective(1000px) rotateX(${-y*strength}deg) rotateY(${x*strength}deg) translateY(-4px)`;
-      });
-      card.addEventListener('pointerleave',()=>{card.style.transform='';});
-    });
-  }
+  $('#catalog-support').addEventListener('click',showSupport);
+  $('#artwork-open').addEventListener('click',()=>openDialog($('#artwork-dialog')));
 })();

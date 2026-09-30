@@ -1,8 +1,8 @@
 {
   "name": "speedy-hosting",
-  "version": "2.0.0",
+  "version": "4.0.0",
   "private": true,
-  "description": "A standalone game hosting website with embedded 3D graphics and original artwork.",
+  "description": "Independent voxel-inspired game hosting website with original illustrations, open-license fonts and embedded single-file assets.",
   "scripts": {
     "build:scene": "esbuild tools/scene.js --bundle --format=iife --minify --legal-comments=inline --outfile=assets/v2/scene.min.js",
     "build": "npm run build:scene && python tools/build.py",
