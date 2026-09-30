@@ -1,0 +1,22 @@
+{
+  "name": "speedy-hosting",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A standalone game hosting website with embedded 3D graphics and original artwork.",
+  "scripts": {
+    "build:scene": "esbuild tools/scene.js --bundle --format=iife --minify --legal-comments=inline --outfile=assets/v2/scene.min.js",
+    "build": "npm run build:scene && python tools/build.py",
+    "preview": "python -m http.server 3000 --bind 0.0.0.0 --directory public",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "vercel": "61.1.0"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

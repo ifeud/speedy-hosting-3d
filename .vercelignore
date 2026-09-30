@@ -1,0 +1,12 @@
+node_modules
+.git
+.local
+.config
+.cache
+.qa
+.venv
+__pycache__
+versions
+.env
+.env.*
+*.zip
