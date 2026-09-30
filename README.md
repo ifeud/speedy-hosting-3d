@@ -106,6 +106,8 @@ To publish manually, push the source and prebuilt `public` folder to your privat
 
 The HTML uses `https://speedyhosting.example` until a real origin is supplied. The optional social-preview image must be available at its public metadata URL. Verify business details and connect secure production backends before launch.
 
+The existing GitHub Pages workflow is preserved and publishes only `public/`, not the private source folders or raw illustration files. Pages availability for a private repository depends on your GitHub account plan and settings.
+
 Do not put credentials in source, HTML, screenshots, chat or the repository. Environment and local authentication files are ignored by Git.
 
 ## Licenses
