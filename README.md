@@ -44,11 +44,12 @@ tools/
   scene.js                    Authored Three.js sculpture and controls
   build.py                    Asset optimization and single-file assembly
   cursors.py                  Transparent cursor generation
+  prepare-vercel.mjs          Automatic production SEO URL injection
   qa.py                       Automated interaction and responsive checks
 package.json                  Exact JavaScript dependency versions
 package-lock.json             Reproducible dependency lockfile
 requirements.txt              Python build dependencies
-vercel.json                   Deploys only the public folder
+vercel.json                   Publishes only the public folder
 ```
 
 ## Build from source
@@ -80,7 +81,7 @@ Vercel deploys the website; GitHub stores the private source repository. These a
 
 1. Create or use a **private** GitHub repository and commit this source.
 2. In Vercel, choose **Add New → Project**, authorize the GitHub integration, and import the private repository.
-3. Select **Other** as the framework. The included `vercel.json` serves the already-built `public` directory. No build or package installation is required on Vercel.
+3. Select **Other** as the framework. The included `vercel.json` serves the already-built `public` directory. No package installation is required. A tiny built-in Node.js publishing step injects the real production origin into the SEO tags.
 4. Deploy. The source repository can remain private while the website is publicly accessible.
 5. To keep future deployments up to date, commit both source changes and the rebuilt `public` files. The Git integration then deploys new commits.
 
@@ -102,7 +103,7 @@ SEO metadata includes the title, description, robots directive, canonical URL, O
 
 Before public launch:
 
-* Replace every `https://speedyhosting.example` occurrence in `tools/site.html` and `tools/build.py` with the real production origin, then rebuild.
+* On Vercel, `tools/prepare-vercel.mjs` automatically resolves the SEO origin from `SITE_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, or `VERCEL_URL`. Set `SITE_URL` to your custom production origin if needed. For other hosts, replace the example origin in the template and rebuild.
 * Host `public/social-preview.jpg` at the social-preview URL referenced by the metadata.
 * Verify actual prices, game requirements, locations, features, support arrangements, and business policies.
 * Connect secure authentication, billing, payment, provisioning, and support backends if turning the concept into a real hosting service.
